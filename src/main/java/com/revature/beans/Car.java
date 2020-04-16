@@ -41,6 +41,9 @@ public class Car implements Serializable {
 	@Positive
 	private int seats;
 	
+	@Positive
+	private int availableSeats;
+	
 	@NotBlank
 	private String make;
 	
@@ -88,6 +91,27 @@ public class Car implements Serializable {
 
 	public int getSeats() {
 		return seats;
+	}
+
+	public Car(int carId, String color, @Positive int seats, @Positive int availableSeats, @NotBlank String make,
+			@NotBlank String model, @Positive int year, User user) {
+		super();
+		this.carId = carId;
+		this.color = color;
+		this.seats = seats;
+		this.availableSeats = availableSeats;
+		this.make = make;
+		this.model = model;
+		this.year = year;
+		this.user = user;
+	}
+
+	public int getAvailableSeats() {
+		return availableSeats;
+	}
+
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 	public void setSeats(int seats) {
