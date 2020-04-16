@@ -34,7 +34,7 @@ import io.swagger.annotations.ApiOperation;
  */
 
 @RestController
-@RequestMapping("/batches")
+@RequestMapping("/batches/")
 @CrossOrigin
 @Api(tags= {"Batch"})
 public class BatchController {
@@ -43,7 +43,7 @@ public class BatchController {
 	private BatchService bs;
 	
 	/**
-	 * HTTP GET method (/batches)
+	 * HTTP GET method (/batches/)
 	 * 
 	 * @param location represents the batch location.
 	 * @return A list of all the batches or batches by the location.
@@ -69,14 +69,14 @@ public class BatchController {
 	 */
 	
 	@ApiOperation(value="Returns batch by number", tags= {"Batch"})
-	@GetMapping("/{number}")
+	@GetMapping("{number}")
 	public Batch getBatchByNumber(@PathVariable("number")int number) {
 		
 		return bs.getBatchByNumber(number);
 	}
 	
 	/**
-	 * HTTP POST method (/batches)
+	 * HTTP POST method (/batches/)
 	 * 
 	 * @param batch represents the new Batch object being sent.
 	 * @return The newly created object with a 201 code.
@@ -90,14 +90,14 @@ public class BatchController {
 	}
 	
 	/**
-	 * HTTP PUT method (/batches)
+	 * HTTP PUT method (/batches/)
 	 * 
 	 * @param batch represents the updated Batch object being sent.
 	 * @return The newly updated object.
 	 */
 	
 	@ApiOperation(value="Updates batch by number", tags= {"Batch"})
-	@PutMapping("/{number}")
+	@PutMapping("{number}")
 	public Batch updateBatch(@Valid @RequestBody Batch batch) {
 		
 		return bs.updateBatch(batch);
@@ -111,7 +111,7 @@ public class BatchController {
 	 */
 	
 	@ApiOperation(value="Deletes batch by number", tags= {"Batch"})
-	@DeleteMapping("/{number}")
+	@DeleteMapping("{number}")
 	public String deleteBatchByNumber(@PathVariable("number")int number) {
 		
 		return bs.deleteBatchByNumber(number);
