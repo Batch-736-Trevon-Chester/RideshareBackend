@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Add the entire logging file to .gitignore -->
+
+<configuration>
+	<Properties>
+		<Property name="log-path">logs</Property>
+		<Property name="archive">${log-path}/archive</Property>
+	</Properties>
+	<Appenders>
+		<File name="File-Appender" fileName="${log-path}/xmlfilelog.log" immediateFlush="false" modulate="true">
+			<PatternLayout>
+				<pattern>
+					[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
+				</pattern>
+			</PatternLayout>
+		</File>
+		<rollingfile name="RollingFile-Appender"
+			filename="${log-path}/rollingfile.log"
+			filepattern="${archive}/rollingfile.log.%d{yyyy-MM-dd-hh-mm}.gz"
+			immediateFlush="false" modulate="true">
+			<patternlayout
+				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n">
+				<policies>
+					<timebasedtriggeringpolicy interval="1"></timebasedtriggeringpolicy>
+				</policies>
+				<defaultrolloverstrategy max="20">
+				</defaultrolloverstrategy>
+			</patternlayout>
+		</rollingfile>
+	</Appenders>
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="Console-Appender" />
+		</Root>
+		<Logger name="guru.springframework.blog.log4j2xml"
+			level="error">
+			<AppenderRef ref="File-Appender" level="error" />
+		</Logger>
+		<AsyncLogger name="guru.springframework.blog.log4j2async"
+			level="debug">
+			<AppenderRef ref="RollingFile-Appender" />
+		</AsyncLogger>
+	</Loggers>
+</configuration>
