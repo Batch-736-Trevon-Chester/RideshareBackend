@@ -11,4 +11,5 @@ public interface AdminService {
 	public Admin createAdmin(Admin admin);
 	public Admin updateAdmin(Admin admin);
 	public String deleteAdminById(int id);
+	public Admin getAdminByUserName(String username);
 }

@@ -42,10 +42,17 @@ public class AdminController {
 	private AdminService as;
 	
 	/**
+	 * One Time Password stored until admin attempts to confirm
+	 */
+	
+	private String OTP;
+	
+	/**
 	 * HTTP GET method (/users)
 	 * 
 	 * @return A list of all the admins.
 	 */
+	
 	
 	@ApiOperation(value="Returns all admins", tags= {"Admin"})
 	@GetMapping
@@ -66,6 +73,22 @@ public class AdminController {
 	public Admin getAdminById(@PathVariable("id")int id) {
 		
 		return as.getAdminById(id);
+	}
+	
+	/**
+	 * HTTP GET method (/adminLogin/{username})
+	 * 
+	 * @param username represents the admin's username.
+	 * @return An admin that matches the username.
+	 */
+	
+	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
+	@GetMapping("/adminLogin/{username}")
+	public Admin adminLogin(@PathVariable("username")String username) {
+		
+		// Need code here for sending email
+		
+		return as.getAdminByUserName(username);
 	}
 	
 	/**
@@ -109,4 +132,29 @@ public class AdminController {
 		
 		return as.deleteAdminById(id);
 	}
+	
+	/**
+	 * HTTP GET method (/OTP/{OTP})
+	 * 
+	 * @param One Time Password submitted by admin attempting to login.
+	 * @return String indicating success or failure on validating admin.
+	 */
+	
+	@ApiOperation(value="Attempts to validate OTP submission", tags= {"Admin"})
+	@GetMapping("/OTP/{OTP}")
+	public String validateOTP(@PathVariable("OTP")String OTP) {
+		
+		// code needs to be written for matching submitted OTP to stored OTP
+		
+		String response;
+		
+		if (OTP.equals(this.OTP)) {
+			response = "Success";
+		} else {
+			response = "Failure";
+		}
+		
+		return response;
+	}
+	
 }
