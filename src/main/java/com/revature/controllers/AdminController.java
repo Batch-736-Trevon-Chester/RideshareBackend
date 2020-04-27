@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.Admin;
+import com.revature.beans.SendEmail;
+import com.revature.beans.StringToJSON;
 import com.revature.services.AdminService;
 
 import io.swagger.annotations.Api;
@@ -46,6 +48,7 @@ public class AdminController {
 	 */
 	
 	private String OTP;
+	private static Admin loggingAdmin;
 	
 	/**
 	 * HTTP GET method (/users)
@@ -85,10 +88,12 @@ public class AdminController {
 	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
 	@GetMapping("/adminLogin/{username}")
 	public Admin adminLogin(@PathVariable("username")String username) {
+		loggingAdmin = as.getAdminByUserName(username);
 		
-		// Need code here for sending email
+		OTP = String.valueOf(SendEmail.generateOTP());
+		SendEmail.sendEmail(loggingAdmin.getEmail(), OTP);
 		
-		return as.getAdminByUserName(username);
+		return loggingAdmin;
 	}
 	
 	/**
@@ -142,16 +147,14 @@ public class AdminController {
 	
 	@ApiOperation(value="Attempts to validate OTP submission", tags= {"Admin"})
 	@GetMapping("/OTP/{OTP}")
-	public String validateOTP(@PathVariable("OTP")String OTP) {
+	public StringToJSON validateOTP(@PathVariable("OTP")String OTP) {
 		
-		// code needs to be written for matching submitted OTP to stored OTP
-		
-		String response;
+		StringToJSON response;
 		
 		if (OTP.equals(this.OTP)) {
-			response = "Success";
+			response = new StringToJSON("Success");
 		} else {
-			response = "Failure";
+			response = new StringToJSON("Failure");
 		}
 		
 		return response;
