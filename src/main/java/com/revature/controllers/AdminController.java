@@ -146,9 +146,9 @@ public class AdminController {
 	 */
 	
 	@ApiOperation(value="Attempts to validate OTP submission", tags= {"Admin"})
-	@GetMapping("/OTP/{OTP}")
-	public StringToJSON validateOTP(@PathVariable("OTP")String OTP) {
-		
+	@PostMapping("/OTP")
+	public StringToJSON validateOTP(@Valid @RequestBody String OTP) {
+				
 		StringToJSON response;
 		
 		if (OTP.equals(this.OTP)) {
