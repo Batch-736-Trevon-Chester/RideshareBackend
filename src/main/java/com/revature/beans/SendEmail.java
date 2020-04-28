@@ -24,7 +24,7 @@ public class SendEmail {
     		+ "please contact the IT team immediately."
     		+ "\nThank you,\nConnections customer support.";
     
-    public static void sendEmail(String recipientEmail, String OTP) {
+    public static boolean sendEmail(String recipientEmail, String OTP) {
     	Properties prop = new Properties();
         prop.put("mail.smtp.host", SMTP_SERVER); //optional, defined in SMTPTransport
         prop.put("mail.smtp.auth", "true");
@@ -54,12 +54,13 @@ public class SendEmail {
 			
 			// send
             t.sendMessage(msg, msg.getAllRecipients());
-            System.out.println("Response: " + t.getLastServerResponse());
 //            loggy.info("Email was sent to alert for a password update.");
             t.close();
+            return true;
         } catch (MessagingException e) {
 //        	loggy.error("Email failed to send", e);
             e.printStackTrace();
+            return false;
         }
     }
     

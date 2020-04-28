@@ -85,8 +85,7 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Admin getAdminByUserName(String username) {
-		ar.findByUserName(username);
-		return null;
+		return ar.findByUserName(username);
 	}
 
 }
