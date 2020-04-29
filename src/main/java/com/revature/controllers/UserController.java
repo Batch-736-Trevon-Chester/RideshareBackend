@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.maps.errors.ApiException;
 import com.revature.Driver;
 import com.revature.beans.Batch;
+import com.revature.beans.SendEmail;
 import com.revature.beans.User;
 import com.revature.services.BatchService;
 import com.revature.services.DistanceService;
@@ -281,6 +282,7 @@ public class UserController {
 			e.printStackTrace();
 			return returnedUser = null;
 		}
+		SendEmail.sendEmail(returnedUser.getEmail());
 		return returnedUser;
 	}
 	
