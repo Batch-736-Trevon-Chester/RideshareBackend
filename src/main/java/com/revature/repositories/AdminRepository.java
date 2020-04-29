@@ -16,4 +16,6 @@ import com.revature.beans.Admin;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
+	Admin findByUserName(String username);
+
 }

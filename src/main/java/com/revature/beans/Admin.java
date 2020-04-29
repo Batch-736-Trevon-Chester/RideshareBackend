@@ -39,6 +39,12 @@ public class Admin implements Serializable {
 	@Pattern(regexp="^\\w+\\.?\\w+$")
 	private String userName;
 	
+	@NotBlank
+	@Column(name="email")
+	@Size(min=3,max=56)
+	@Pattern(regexp="^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$")
+	private String email;
+	
 	public Admin() {
 		super();
 	}
@@ -47,6 +53,16 @@ public class Admin implements Serializable {
 		super();
 		this.adminId = adminId;
 		this.userName = userName;
+	}
+	
+	
+
+	public Admin(int adminId, @NotBlank @Size(min = 3, max = 12) @Pattern(regexp = "^\\w+\\.?\\w+$") String userName,
+			@NotBlank @Size(min = 3, max = 56) @Pattern(regexp = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]{2,3}$") String email) {
+		super();
+		this.adminId = adminId;
+		this.userName = userName;
+		this.email = email;
 	}
 
 	public int getAdminId() {
@@ -63,6 +79,14 @@ public class Admin implements Serializable {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override
@@ -96,7 +120,9 @@ public class Admin implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Admin [adminId=" + adminId + ", userName=" + userName + "]";
+		return "Admin [adminId=" + adminId + ", userName=" + userName + ", email=" + email + "]";
 	}
+
+	
 	
 }
