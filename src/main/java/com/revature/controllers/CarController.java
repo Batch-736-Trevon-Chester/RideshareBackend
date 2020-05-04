@@ -106,7 +106,6 @@ public class CarController {
 	@ApiOperation(value="Updates car by id", tags= {"Car"})
 	@PutMapping("/{id}")
 	public Car updateCar(@Valid @RequestBody Car car) {
-		System.out.println("Triggered");
 		return cs.updateCar(car);
 	}
 	
