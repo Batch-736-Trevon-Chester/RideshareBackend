@@ -282,7 +282,7 @@ public class UserController {
 			e.printStackTrace();
 			return returnedUser = null;
 		}
-		SendEmail.sendEmail(returnedUser.getEmail());
+//		SendEmail.sendEmail(returnedUser.getEmail());
 		return returnedUser;
 	}
 	
