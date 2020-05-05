@@ -17,48 +17,41 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
  * The purpose of this class is to responsively log information before or after method calls.
  */
 
-//@Aspect
-//@Component
+@Aspect
+@Component
 //@ConditionalOnExpression("${endpoint.aspect.enabled:true}")
 public class LoggingAspects {
 
 	private static final Logger logger = LogManager.getLogger(LoggingAspects.class);
-
-	@Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-	public void controller() {
-		System.out.println("controller");
-	}
-
-	@Pointcut("execution(* *.*(..))")
-	protected void allMethod() {
-		System.out.println("allmethod");
-	}
-
-	@Pointcut("execution(public * *(..))")
-	protected void loggingPublicOperation() {
-		System.out.println("publicOp");
-	}
-
-	@Pointcut("execution(* *.*(..))")
-	protected void loggingAllOperation() {
-		System.out.println("allOp");
-	}
-
-	@Pointcut("within(org.learn.log..*)")
-	private void logAnyFunctionWithinResource() {
-	}
-
-	@After("controller() && allMethod()")
-	public void afterCompletion(HttpServletResponse res, Object handler, Exception ex) {
-		HttpServletResponse response = new ContentCachingResponseWrapper(res);
-		String returnValue = this.getValue(handler);
-		logger.debug("Method Return value : " + returnValue);
-		logger.debug("Http response status: " + response.getStatus());
-	}
+    /**
+     * Pointcut that matches all repositories, services and Web REST endpoints.
+     */
+    @Pointcut("within(@org.springframework.stereotype.Repository *)" +
+        " || within(@org.springframework.stereotype.Service *)" +
+        " || within(@org.springframework.web.bind.annotation.RestController *)")
+    public void springBeanPointcut() {
+        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+    }
+    /**
+     * Pointcut that matches all Spring beans in the application's main packages.
+     */
+    @Pointcut("within(com.revature.beans..*)")
+    public void applicationPackagePointcut() {
+        // Method is empty as this is just a Pointcut, the implementations are in the advices.
+    }
+	
+	/*
+	 * @After("springBeanPointcut() && applicationPackagePointcut()") public void
+	 * afterCompletion(HttpServletResponse res, Object handler, Exception ex) {
+	 * HttpServletResponse response = new ContentCachingResponseWrapper(res); String
+	 * returnValue = this.getValue(handler); logger.debug("Method Return value : " +
+	 * returnValue); logger.debug("Http response status: " + response.getStatus());
+	 * }
+	 */
 
 	// After -> Any method within resource annotated with @Controller annotation
 	// throws an exception ...Log it
-	@AfterThrowing(pointcut = "controller() && allMethod()", throwing = "exception")
+	@AfterThrowing(pointcut = "springBeanPointcut() && applicationPackagePointcut()", throwing = "exception")
 	public void logAfterThrowing(JoinPoint joinPoint, Throwable exception) {
 		logger.error("An exception has been thrown in " + joinPoint.getSignature().getName() + " ()");
 		logger.error("Cause : " + exception.getCause());

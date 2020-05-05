@@ -1,9 +1,8 @@
 package com.revature.controllers;
 
+import java.util.HashMap;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,21 +17,17 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.revature.beans.Admin;
+import com.revature.beans.SendEmail;
 import com.revature.services.AdminService;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-/**
- * AdminController takes care of handling our requests to /admins.
- * It provides methods that can perform tasks like all admins, admin by id, add admin, update admin, and
- * delete admin by id.
- * 
- * @author Adonis Cabreja
- *
- */
+/* 
+*  Name: Trevor Miller, Chris Bencivenga, Anthony Ledgister 		Timestamp: 4/28/20 2:00 pm
+*  Description: This class handles manipulation of admin users, such as logging in, 
+*  and adding and dropping users
+*/
 
 @RestController
 @RequestMapping("/admins")
@@ -46,10 +41,18 @@ public class AdminController {
 	private AdminService as;
 	
 	/**
+	 * One Time Password stored until admin attempts to confirm
+	 */
+	
+	private String OTP;
+	private static Admin loggingAdmin;
+	
+	/**
 	 * HTTP GET method (/users)
 	 * 
 	 * @return A list of all the admins.
 	 */
+	
 	
 	@ApiOperation(value="Returns all admins", tags= {"Admin"})
 	@GetMapping
@@ -70,6 +73,23 @@ public class AdminController {
 	public Admin getAdminById(@PathVariable("id")int id) {
 		
 		return as.getAdminById(id);
+	}
+	
+	/**
+	 * HTTP GET method (/adminLogin/{username})
+	 * 
+	 * @param username represents the admin's username.
+	 * @return An admin that matches the username.
+	 */
+	
+	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
+	@PostMapping("/login")
+	public boolean adminLogin(@RequestBody HashMap<String, String> adminLoginObj) {
+		loggingAdmin = as.getAdminByUserName(adminLoginObj.get("userName"));
+		if (loggingAdmin == null) 
+			return false;
+		OTP = String.valueOf(SendEmail.generateOTP());
+		return SendEmail.sendEmail(loggingAdmin.getEmail(), OTP);
 	}
 	
 	/**
@@ -111,5 +131,22 @@ public class AdminController {
 	@DeleteMapping("/{id}")
 	public String deleteAdmin(@PathVariable("id")int id) {
 		return as.deleteAdminById(id);
+	}
+	
+	/**
+	 * HTTP GET method (/OTP/{OTP})
+	 * 
+	 * @param One Time Password submitted by admin attempting to login.
+	 * @return String indicating success or failure on validating admin.
+	 */
+	
+	@ApiOperation(value="Attempts to validate OTP submission", tags= {"Admin"})
+	@PostMapping("/OTP")
+	public Admin validateOTP(@Valid @RequestBody HashMap<String, String> adminLoginObj) {
+		if (OTP.equals(this.OTP)) {
+			return loggingAdmin;
+		} else {
+			return null;
+		}
 	}
 }

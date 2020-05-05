@@ -83,4 +83,9 @@ public class AdminServiceImpl implements AdminService {
 		return "Admin with id: " + id + " was deleted.";
 	}
 
+	@Override
+	public Admin getAdminByUserName(String username) {
+		return ar.findByUserName(username);
+	}
+
 }

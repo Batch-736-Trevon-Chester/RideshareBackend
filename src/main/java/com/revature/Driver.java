@@ -23,7 +23,6 @@ import com.revature.services.DistanceService;
 
 @SpringBootApplication
 @EnableSwagger2
-@EnableAspectJAutoProxy
 public class Driver {
 	/**
 	 * The main method of the Driver class.
