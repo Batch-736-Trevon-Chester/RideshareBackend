@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"Car"})
 public class CarController {
+	private static final Logger logger = LogManager.getLogger(CarController.class);
 	
 	@Autowired
 	private CarService cs;
@@ -92,6 +95,7 @@ public class CarController {
 	@ApiOperation(value="Adds a new car", tags= {"Car"})
 	@PostMapping
 	public ResponseEntity<Car> addCar(@Valid @RequestBody Car car) {
+		logger.debug("Request Body: "+car.getCarId());
 		
 		return new ResponseEntity<>(cs.addCar(car), HttpStatus.CREATED);
 	}
@@ -106,7 +110,7 @@ public class CarController {
 	@ApiOperation(value="Updates car by id", tags= {"Car"})
 	@PutMapping("/{id}")
 	public Car updateCar(@Valid @RequestBody Car car) {
-		System.out.println("Triggered");
+		logger.debug("Request Body: "+car.getCarId());
 		return cs.updateCar(car);
 	}
 	

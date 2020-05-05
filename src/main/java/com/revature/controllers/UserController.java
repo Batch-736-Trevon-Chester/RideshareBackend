@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.Validator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -50,6 +52,8 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"User"})
 public class UserController {
+	
+	private static final Logger logger = LogManager.getLogger(UserController.class);
 	
 	@Autowired
 	private UserService us;
@@ -167,8 +171,8 @@ public class UserController {
 	@PostMapping
 	public Map<String, Set<String>> addUser(@Valid @RequestBody User user, BindingResult result) {
 		
-		System.out.println(user.isDriver());
-		 Map<String, Set<String>> errors = new HashMap<>();
+		logger.debug("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
+		Map<String, Set<String>> errors = new HashMap<>();
 		 
 		 for (FieldError fieldError : result.getFieldErrors()) {
 		      String code = fieldError.getCode();
@@ -274,11 +278,12 @@ public class UserController {
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
+		logger.debug("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
 		User returnedUser;
 		try {
 			returnedUser = us.updateUser(user);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Error occoured: ", e.getMessage());
 			return returnedUser = null;
 		}
 		return returnedUser;

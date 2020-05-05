@@ -1,7 +1,5 @@
 package com.revature.logging;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
@@ -22,20 +20,16 @@ public class RequestLogFilter extends AbstractRequestLoggingFilter {
 		logger.debug("Request URL: " + request.getRequestURL().toString());
 		logger.debug("IP address: " + request.getRemoteAddr());
 		logger.debug("Query string: " + request.getQueryString());
+		logger.debug("Request URI: " + request.getRequestURI());
+		logger.debug("Request Header for DEVICE_ID: " + request.getHeader(DEVICE_ID));
+		logger.debug("Request Header for DEVICE_TYPE: " + request.getHeader(DEVICE_TYPE));
 
 	}
 
 	@Override
 	protected void afterRequest(HttpServletRequest request, String message) {
 
-		logger.debug("Request URI: " + request.getRequestURI());
-		logger.debug("Request Header for DEVICE_ID: " + request.getHeader(DEVICE_ID));
-		logger.debug("Request Header for DEVICE_TYPE: " + request.getHeader(DEVICE_TYPE));
-		try {
-			logger.debug("Request Body: " + request.getReader().toString());
-		} catch (IOException e) {
-			logger.debug("Request Body: null");
-		}
+		logger.info("Request Begins Routed: ");
 
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.beans.Batch;
+import com.revature.logging.LoggingAspects;
 import com.revature.services.BatchService;
 
 import io.swagger.annotations.Api;
@@ -38,6 +41,8 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"Batch"})
 public class BatchController {
+	
+	private static final Logger logger = LogManager.getLogger(BatchController.class);
 	
 	@Autowired
 	private BatchService bs;
@@ -86,6 +91,7 @@ public class BatchController {
 	@PostMapping
 	public ResponseEntity<Batch> addBatch(@Valid @RequestBody Batch batch) {
 		
+		logger.debug("Request Body: "+batch.getBatchNumber());
 		return new ResponseEntity<>(bs.addBatch(batch), HttpStatus.CREATED);
 	}
 	
@@ -99,7 +105,7 @@ public class BatchController {
 	@ApiOperation(value="Updates batch by number", tags= {"Batch"})
 	@PutMapping("{number}")
 	public Batch updateBatch(@Valid @RequestBody Batch batch) {
-		
+		logger.debug("Request Body: "+batch.getBatchNumber());
 		return bs.updateBatch(batch);
 	}
 	

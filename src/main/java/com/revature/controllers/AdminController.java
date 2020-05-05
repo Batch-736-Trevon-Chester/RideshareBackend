@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,8 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"Admin"})
 public class AdminController {
+	
+	private static final Logger logger = LogManager.getLogger(AdminController.class);
 	
 	@Autowired
 	private AdminService as;
@@ -78,7 +82,7 @@ public class AdminController {
 	@ApiOperation(value="Adds a new admin", tags= {"Admin"})
 	@PostMapping
 	public ResponseEntity<Admin> createAdmin(@Valid @RequestBody Admin admin) {
-		
+		logger.debug("Request Body: "+admin.getAdminId());
 		return new ResponseEntity<>(as.createAdmin(admin), HttpStatus.CREATED);
 	}
 	
@@ -92,7 +96,7 @@ public class AdminController {
 	@ApiOperation(value="Updates admin by id", tags= {"Admin"})
 	@PutMapping("/{id}")
 	public Admin updateAdmin(@Valid @RequestBody Admin admin) {
-		
+		logger.debug("Request Body: "+admin.getAdminId());
 		return as.updateAdmin(admin);
 	}
 	
@@ -106,7 +110,6 @@ public class AdminController {
 	@ApiOperation(value="Deletes an admin by id", tags= {"Admin"})
 	@DeleteMapping("/{id}")
 	public String deleteAdmin(@PathVariable("id")int id) {
-		
 		return as.deleteAdminById(id);
 	}
 }

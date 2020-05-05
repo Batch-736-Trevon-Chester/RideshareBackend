@@ -17,9 +17,9 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
  * The purpose of this class is to responsively log information before or after method calls.
  */
 
-@Aspect
-@Component
-@ConditionalOnExpression("${endpoint.aspect.enabled:true}")
+//@Aspect
+//@Component
+//@ConditionalOnExpression("${endpoint.aspect.enabled:true}")
 public class LoggingAspects {
 
 	private static final Logger logger = LogManager.getLogger(LoggingAspects.class);
