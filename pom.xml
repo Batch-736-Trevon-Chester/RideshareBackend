@@ -157,12 +157,20 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 			<version>2.2.5.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+
 		<!-- May need this for async logging -->
-		<!-- <dependency>
-			<groupId>com.lmax</groupId>
-			<artifactId>disruptor</artifactId>
-			<version>3.3.4</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.lmax</groupId> <artifactId>disruptor</artifactId> 
+			<version>3.3.4</version> </dependency> -->
 
 
 	</dependencies>
