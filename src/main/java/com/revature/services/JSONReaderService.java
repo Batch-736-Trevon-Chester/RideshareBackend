@@ -39,8 +39,6 @@ public class JSONReaderService {
 		Map idAndStreets = new HashMap();  
 			
 		JSONArray addressList = (JSONArray) obj;
-//		System.out.println("\n... Reading in From addresses.json ...");
-//		System.out.println(addressList);
 
 		for (Object o : addressList) {
 			JSONObject user = (JSONObject) o;
@@ -48,18 +46,15 @@ public class JSONReaderService {
 			Long user_id = (Long) user.get("user_id");
 			long u=user_id;  
 			int intUser=(int)u;  
-			System.out.println(intUser);
 
 			// Concatetate street & zip
 			String street = (String) user.get("h_address");
 			String h_zip = (String) user.get("h_zip");
 			String addrConcat = street + " "+ h_zip; 
-			System.out.println(addrConcat);
 			
 			// Make Hash of userId/addresses PRE-distanceMatrix
 			idAndStreets.put(intUser, addrConcat); // make map of id/streets
 		}
-		 System.out.println(idAndStreets);
 		return idAndStreets;
 		
 	}
@@ -96,25 +91,19 @@ public class JSONReaderService {
 		ArrayList streets = new ArrayList();
         ArrayList newList = new ArrayList();
 		JSONArray addressList = (JSONArray) obj;
-		System.out.println("\n... Reading in From addresses.json ...");
-		System.out.println(addressList);
-		System.out.println("\n Objects: ");
 
 		for (Object o : addressList) {
 			JSONObject user = (JSONObject) o;
 
 			Long user_id = (Long) user.get("user_id");
-			System.out.println(user_id);
 			
 			String first_name = (String) user.get("first_name");
 			String last_name = (String) user.get("last_name");
 			String fullName = first_name + " " + last_name;
-			System.out.println(fullName); 
 
 			String street = (String) user.get("h_address");
 			String h_zip = (String) user.get("h_zip");
 			String addrConcat = street + " "+ h_zip; 
-			System.out.println(addrConcat);
 			  
 			streets.add(addrConcat); // make array of streets
 			newList.add(o);
@@ -125,7 +114,6 @@ public class JSONReaderService {
 //				JSONArray batch = (JSONArray) user.get("batch");
 //
 //				for (Object b : batch) {
-//					System.out.println(b + "");
 //				}
 		}
 

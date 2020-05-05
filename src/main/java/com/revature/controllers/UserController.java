@@ -82,7 +82,6 @@ public class UserController {
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
 		//List<User> aps =  new ArrayList<User>();
-		System.out.println(address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
 //		
@@ -102,7 +101,6 @@ public class UserController {
 //						
 	}
 //		
-//		System.out.println(destinationList);
 //		
 		String [] destinations = new String[destinationList.size()];
 ////		
@@ -168,7 +166,6 @@ public class UserController {
 	@PostMapping
 	public Map<String, Set<String>> addUser(@Valid @RequestBody User user, BindingResult result) {
 		
-		System.out.println(user.isDriver());
 		 Map<String, Set<String>> errors = new HashMap<>();
 		 
 		 for (FieldError fieldError : result.getFieldErrors()) {
