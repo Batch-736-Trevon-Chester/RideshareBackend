@@ -3,7 +3,7 @@ insert into batches values
 (2, 'Virginia');
 
 insert into admins values
-(1, 'rideshare@gmail.com', 'admin1');
+(1, 'wayne.ledg@gmail.com', 'admin1');
 
 insert into users values 
 (1, 'gpichmann0@artisteer.com', 'Grady', '5 Carpenter Plaza', 'New York City', 'NY', '10275', false, false, false, 'Pichmann', '212-374-3466', 'gpichmann0', '30401 Esker Point', 'Des Moines', 'IA', '50347', 1),

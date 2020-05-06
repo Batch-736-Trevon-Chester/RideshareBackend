@@ -5,9 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 /**
- * LoginController takes userName  and Password. 
+ * LoginController takes userName and Password.
  * 
  * @author Bertrick Lappa
  */
@@ -43,49 +41,51 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @RequestMapping("/login")
 public class LoginController {
-	
+
 	@Autowired
 	private UserService us;
-	
+
 	@Autowired
 	private DistanceService ds;
-	
-	@GetMapping//("/{userName}/{passWord}")
-	public Map<String, Set<String>> login(
-							   @RequestParam(name="userName")String userName,
-							   @RequestParam(name="passWord")String passWord) {
-		
+
+	@GetMapping // ("/{userName}/{passWord}")
+	public Map<String, Set<String>> login(@RequestParam(name = "userName") String userName,
+			@RequestParam(name = "passWord") String passWord) {
+
 		Map<String, Set<String>> errors = new HashMap<>();
-		if(userName.length() == 0) {
-		       errors.computeIfAbsent("userName", key -> new HashSet<>()).add("userName required!");
+		if (userName.length() == 0) {
+			errors.computeIfAbsent("userName", key -> new HashSet<>()).add("userName required!");
 		}
-		/*if((userName == null || userName.equals("") || passWord.isEmpty())) {
-		       errors.computeIfAbsent("passWord", key -> new HashSet<>()).add("passWord required!");
-		}*/
+		/*
+		 * if((userName == null || userName.equals("") || passWord.isEmpty())) {
+		 * errors.computeIfAbsent("passWord", key -> new
+		 * HashSet<>()).add("passWord required!"); }
+		 */
 		if (errors.isEmpty()) {
 			Map<String, Set<String>> info = new HashMap<>();
-			//call login service here
-			List<User> u=us.getUserByUsername(userName);
-			if(u.size() != 0) {
-			   info.computeIfAbsent("name", key -> new HashSet<>()).add(u.get(0).getFirstName()+" "+u.get(0).getLastName());
-			   info.computeIfAbsent("userid", key -> new HashSet<>()).add(u.get(0).getUserId()+"");
-			   info.computeIfAbsent("active", key -> new HashSet<>()).add(u.get(0).isActive()+"");
-			}else {
+			// call login service here
+			List<User> u = us.getUserByUsername(userName);
+			if (u.size() != 0) {
+				info.computeIfAbsent("name", key -> new HashSet<>())
+						.add(u.get(0).getFirstName() + " " + u.get(0).getLastName());
+				info.computeIfAbsent("userid", key -> new HashSet<>()).add(u.get(0).getUserId() + "");
+				info.computeIfAbsent("active", key -> new HashSet<>()).add(u.get(0).isActive() + "");
+			} else {
 				info.computeIfAbsent("userNotFound", key -> new HashSet<>()).add("User not found!");
 			}
 			return info;
-		}else {
-			 return errors;
+		} else {
+			return errors;
 		}
 	}
-	
+
 	@GetMapping("/getGoogleApi")
 	public Map<String, Set<String>> getGoogleApi() {
 		Map<String, Set<String>> info = new HashMap<>();
-		 // getting API key
-		 String newkey = ds.getGoogleMAPKey();
-		 info.computeIfAbsent("googleMapAPIKey", key -> new HashSet<>()).add(newkey);
-		 return info;
+		// getting API key
+		String newkey = ds.getGoogleMAPKey();
+		info.computeIfAbsent("googleMapAPIKey", key -> new HashSet<>()).add(newkey);
+		return info;
 	}
-	
+
 }

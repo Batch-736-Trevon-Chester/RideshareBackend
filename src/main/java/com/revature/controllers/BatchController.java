@@ -3,7 +3,8 @@ package com.revature.controllers;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,8 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"Batch"})
 public class BatchController {
 	
+	private static final Logger logger = LogManager.getLogger("HTTPLogger");
+	
 	@Autowired
 	private BatchService bs;
 	
@@ -53,6 +56,7 @@ public class BatchController {
 	@GetMapping
 	public List<Batch> getBatches(@RequestParam(name="location",required=false)String location) {
 		
+		logger.warn("Request Parameter: "+location);
 		if (location != null) {
 			
 			return bs.getBatchByLocation(location);
@@ -72,6 +76,7 @@ public class BatchController {
 	@GetMapping("{number}")
 	public Batch getBatchByNumber(@PathVariable("number")int number) {
 		
+		logger.warn("Request Path Variable: "+number);
 		return bs.getBatchByNumber(number);
 	}
 	
@@ -86,6 +91,7 @@ public class BatchController {
 	@PostMapping
 	public ResponseEntity<Batch> addBatch(@Valid @RequestBody Batch batch) {
 		
+		logger.warn("Request Body: "+batch.getBatchNumber());
 		return new ResponseEntity<>(bs.addBatch(batch), HttpStatus.CREATED);
 	}
 	
@@ -99,7 +105,7 @@ public class BatchController {
 	@ApiOperation(value="Updates batch by number", tags= {"Batch"})
 	@PutMapping("{number}")
 	public Batch updateBatch(@Valid @RequestBody Batch batch) {
-		
+		logger.warn("Request Body: "+batch.getBatchNumber());
 		return bs.updateBatch(batch);
 	}
 	
@@ -113,7 +119,7 @@ public class BatchController {
 	@ApiOperation(value="Deletes batch by number", tags= {"Batch"})
 	@DeleteMapping("{number}")
 	public String deleteBatchByNumber(@PathVariable("number")int number) {
-		
+		logger.warn("Request Path Variable: "+number);
 		return bs.deleteBatchByNumber(number);
 	}
 }

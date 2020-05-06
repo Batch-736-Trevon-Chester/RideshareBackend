@@ -3,7 +3,8 @@ package com.revature.controllers;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ import io.swagger.annotations.ApiOperation;
 @CrossOrigin
 @Api(tags= {"Car"})
 public class CarController {
+	private static final Logger logger = LogManager.getLogger("HTTPLogger");
 	
 	@Autowired
 	private CarService cs;
@@ -51,6 +53,7 @@ public class CarController {
 	@GetMapping
 	public List<Car> getCars() {
 		
+		logger.warn("Response: getting all cars");
 		return cs.getCars();
 	}
 	
@@ -64,7 +67,7 @@ public class CarController {
 	@ApiOperation(value="Returns car by id", tags= {"Car"})
 	@GetMapping("/{id}")
 	public Car getCarById(@PathVariable("id")int id) {
-		
+		logger.warn("Request Path Variable: "+id);
 		return cs.getCarById(id);
 	}
 	
@@ -78,7 +81,7 @@ public class CarController {
 	@ApiOperation(value="Returns car by user id", tags= {"Car"})
 	@GetMapping("/users/{userId}")
 	public Car getCarByUserId(@PathVariable("userId")int userId) {
-		
+		logger.warn("Request Path Variable: "+userId);
 		return cs.getCarByUserId(userId);
 	}
 	
@@ -92,6 +95,7 @@ public class CarController {
 	@ApiOperation(value="Adds a new car", tags= {"Car"})
 	@PostMapping
 	public ResponseEntity<Car> addCar(@Valid @RequestBody Car car) {
+		logger.warn("Request Body: "+car.getCarId());
 		
 		return new ResponseEntity<>(cs.addCar(car), HttpStatus.CREATED);
 	}
@@ -106,6 +110,7 @@ public class CarController {
 	@ApiOperation(value="Updates car by id", tags= {"Car"})
 	@PutMapping("/{id}")
 	public Car updateCar(@Valid @RequestBody Car car) {
+		logger.warn("Request Body: "+car.getCarId());
 		return cs.updateCar(car);
 	}
 	
@@ -119,7 +124,7 @@ public class CarController {
 	@ApiOperation(value="Deletes car by id", tags= {"Car"})
 	@DeleteMapping("/{id}")
 	public String deleteCarById(@PathVariable("id")int id) {
-		
+		logger.warn("Request Path Variable: "+id);
 		return cs.deleteCarById(id);
 	}
 }
