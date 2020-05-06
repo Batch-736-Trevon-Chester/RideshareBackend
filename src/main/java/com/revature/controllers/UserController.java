@@ -54,7 +54,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"User"})
 public class UserController {
 	
-	private static final Logger logger = LogManager.getLogger(UserController.class);
+	private static final Logger logger = LogManager.getLogger("HTTPLogger");
 	
 	@Autowired
 	private UserService us;
@@ -86,6 +86,7 @@ public class UserController {
 	@GetMapping("/driver/{address}")
 	public List <User> getTopFiveDrivers(@PathVariable("address")String address) throws ApiException, InterruptedException, IOException {
 		//List<User> aps =  new ArrayList<User>();
+		logger.warn("Request Path Variable: "+address);
 		List<String> destinationList = new ArrayList<String>();
 		String [] origins = {address};
 //		
@@ -153,7 +154,7 @@ public class UserController {
 	@ApiOperation(value="Returns user by id", tags= {"User"})
 	@GetMapping("/{id}")
 	public User getUserById(@PathVariable("id")int id) {
-		
+		logger.warn("Request Path Variable: "+id);
 		return us.getUserById(id);
 	}
 	
@@ -170,7 +171,7 @@ public class UserController {
 	@PostMapping
 	public Map<String, Set<String>> addUser(@Valid @RequestBody User user, BindingResult result) {
 		
-		logger.debug("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
+		logger.warn("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
 		Map<String, Set<String>> errors = new HashMap<>();
 		 
 		 for (FieldError fieldError : result.getFieldErrors()) {
@@ -277,12 +278,12 @@ public class UserController {
 	@ApiOperation(value="Updates user by id", tags= {"User"})
 	@PutMapping
 	public User updateUser(@Valid @RequestBody User user) {
-		logger.debug("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
+		logger.warn("Request Body: [User id: "+user.getUserId()+" Batch id: "+user.getBatch().getBatchNumber()+" City: "+user.getwCity()+"]");
 		User returnedUser;
 		try {
 			returnedUser = us.updateUser(user);
 		} catch (Exception e) {
-			logger.error("Error occoured: ", e.getMessage());
+			logger.error("Error occoured: ", e.getLocalizedMessage());
 			return returnedUser = null;
 		}
 //		SendEmail.sendEmail(returnedUser.getEmail());
@@ -299,7 +300,7 @@ public class UserController {
 	@ApiOperation(value="Deletes user by id", tags= {"User"})
 	@DeleteMapping("/{id}")
 	public String deleteUserById(@PathVariable("id")int id) {
-		
+		logger.warn("Request Path Variable: "+id);
 		return us.deleteUserById(id);
 	}
 	

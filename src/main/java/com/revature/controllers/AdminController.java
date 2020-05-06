@@ -1,6 +1,6 @@
 package com.revature.controllers;
 
-import java.util.HashMap;
+import java.util.HashMap; 
 import java.util.List;
 import javax.validation.Valid;
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags= {"Admin"})
 public class AdminController {
 	
-	private static final Logger logger = LogManager.getLogger(AdminController.class);
+	private static final Logger logger = LogManager.getLogger("HTTPLogger");
 	
 	@Autowired
 	private AdminService as;
@@ -58,6 +58,7 @@ public class AdminController {
 	@GetMapping
 	public List<Admin> getAdmins() {
 		
+		logger.warn("Response: getting all admins");
 		return as.getAdmins();
 	}
 	
@@ -71,8 +72,10 @@ public class AdminController {
 	@ApiOperation(value="Returns admin by id", tags= {"Admin"})
 	@GetMapping("/{id}")
 	public Admin getAdminById(@PathVariable("id")int id) {
-		
-		return as.getAdminById(id);
+		logger.warn("Request Path Variable: "+ id);
+		Admin ad = as.getAdminById(id);
+		logger.warn("Response Body: adminId= "+ ad.getAdminId());
+		return ad;
 	}
 	
 	/**
@@ -85,10 +88,15 @@ public class AdminController {
 	@ApiOperation(value="Returns admin by username", tags= {"Admin"})
 	@PostMapping("/login")
 	public boolean adminLogin(@RequestBody HashMap<String, String> adminLoginObj) {
+
 		loggingAdmin = as.getAdminByUserName(adminLoginObj.get("userName"));
-		if (loggingAdmin == null) 
+		logger.warn("Request Body: "+ loggingAdmin.getAdminId());
+		if (loggingAdmin == null) {
+			logger.warn("Response Body: false");
 			return false;
+			}
 		OTP = String.valueOf(SendEmail.generateOTP());
+		logger.warn("Response Body: true");
 		return SendEmail.sendEmail(loggingAdmin.getEmail(), OTP);
 	}
 	
@@ -102,7 +110,7 @@ public class AdminController {
 	@ApiOperation(value="Adds a new admin", tags= {"Admin"})
 	@PostMapping
 	public ResponseEntity<Admin> createAdmin(@Valid @RequestBody Admin admin) {
-		logger.debug("Request Body: "+admin.getAdminId());
+		logger.warn("Request Body: "+admin.getAdminId());
 		return new ResponseEntity<>(as.createAdmin(admin), HttpStatus.CREATED);
 	}
 	
@@ -116,7 +124,8 @@ public class AdminController {
 	@ApiOperation(value="Updates admin by id", tags= {"Admin"})
 	@PutMapping("/{id}")
 	public Admin updateAdmin(@Valid @RequestBody Admin admin) {
-		logger.debug("Request Body: "+admin.getAdminId());
+		logger.warn("Request Body: "+admin.getAdminId());
+		logger.warn("Response: "+ admin.getAdminId());
 		return as.updateAdmin(admin);
 	}
 	
@@ -130,6 +139,7 @@ public class AdminController {
 	@ApiOperation(value="Deletes an admin by id", tags= {"Admin"})
 	@DeleteMapping("/{id}")
 	public String deleteAdmin(@PathVariable("id")int id) {
+		logger.warn("Request Path Variable: "+id);
 		return as.deleteAdminById(id);
 	}
 	

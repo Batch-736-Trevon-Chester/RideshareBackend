@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<include
+		resource="org/springframework/boot/logging/log4j/base.xml" />
+	<Properties>
+		<Property name="log-path"
+			value="./src/main/resources/log_files" />
+		<Property name="archive" value="${log-path}/archive" />
+	</Properties>
+	<Appenders>
+		<File name="File-Appender"
+			fileName="${log-path}/rideshareLog.log" immediateFlush="false">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n">
+			</PatternLayout>
+		</File>
+		<!-- If email configuration for error notification is necessary in the 
+			future, the commented line below can be used to do so. -->
+
+		<!-- # SMTP Appender for sending email notification's when errors occurs 
+			<SMTP name="MailAppender" subject="RideForce Error [Server Side]" to="youremail@example.com" 
+			from="log4j2-demo-alerts@example.com" smtpHost="gmailSMTP" smtpPort="587" 
+			smtpUsername="yourSMTPUsername" smtpPassword="yourSMTPPassword" bufferSize="1"> 
+			<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" /> <PatternLayout> 
+			<Pattern>${LOG_PATTERN}</Pattern> </PatternLayout> </SMTP> -->
+	</Appenders>
+	<Loggers>
+		<Root level="warn">
+			<AppenderRef ref="File-Appender" />
+		</Root>
+		<Logger name="errorLogger" level="error" additivity="false">
+			<AppenderRef ref="File-Appender" level="error" />
+		</Logger>
+		<logger name="HTTPLogger" level="warn" additivity="false">
+			<AppenderRef ref="File-Appender" level="warn" />
+		</logger>
+	</Loggers>
+</configuration>
